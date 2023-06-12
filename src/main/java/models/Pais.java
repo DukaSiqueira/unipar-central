@@ -1,27 +1,16 @@
 package models;
 
-public class Pais {
+public class Pais extends AbstractBaseEntity {
 
-    private int id;
     private String nome;
     private String abreviacao;
-    private String ra;
 
     public Pais() {}
 
-    public Pais(int id, String nome, String abreviacao, String ra) {
-        this.id = id;
+    public Pais(int id, String nome, String abreviacao, String registroAcademico) {
+        super(id, registroAcademico);
         this.nome = nome;
         this.abreviacao = abreviacao;
-        this.ra = ra;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -40,11 +29,13 @@ public class Pais {
         this.abreviacao = abreviacao;
     }
 
-    public String getRa() {
-        return ra;
-    }
-
-    public void setRa(String ra) {
-        this.ra = ra;
+    @Override
+    public String toString() {
+        return "Pais{" +
+                "id='" + super.getId() + '\'' +
+                ", nome='" + nome + '\'' +
+                ", abreviacao='" + abreviacao + '\'' +
+                ", RA='" + super.getRegistroAcademico() + '\'' +
+                '}' + "\n";
     }
 }
