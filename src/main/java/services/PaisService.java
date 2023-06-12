@@ -59,4 +59,17 @@ public class PaisService {
         return id;
     }
 
+    public Pais findById(int id) throws SQLException, CampoNaoInformadoException, TamanhoCampoInvalidoException , Exception{
+        if (id <= 0)
+            throw new TamanhoCampoInvalidoException("id", 1);
+
+        PaisDAO paisDAO = new PaisDAO();
+        Pais response = paisDAO.findByid(id);
+
+        if (response == null)
+            throw new Exception("Não foi possível encontrar nenhum páis com o id " + id + "!");
+
+        return response;
+    }
+
 }
