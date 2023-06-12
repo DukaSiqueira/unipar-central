@@ -14,8 +14,6 @@ public class PaisDAO {
     private static final String INSERT = "INSERT INTO pais(id, nome, sigla, ra)" +
             "VALUES (?, ?, ?, ?)";
 
-    private static final String FIND_BY_ID = "SELECT * FROM PAIS WHERE ID = ?";
-
     public List<Pais> findAll() throws SQLException {
         ArrayList<Pais> response = new ArrayList<>();
         Connection conn = null;
@@ -85,39 +83,5 @@ public class PaisDAO {
         }
 
         return id;
-    }
-
-    public Pais findByid(int id) throws SQLException {
-        Pais response = null;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = new DatabaseUtils().getConnection();
-            pstmt = conn.prepareStatement(FIND_BY_ID);
-            pstmt.setInt(1, id);
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                response = new Pais();
-                response.setId(rs.getInt("ID"));
-                response.setNome(rs.getString("NOME"));
-                response.setAbreviacao(rs.getString("SIGLA"));
-                response.setRegistroAcademico(rs.getString("RA"));
-            }
-
-        } finally {
-            if (rs != null)
-                rs.close();
-
-            if (pstmt != null)
-                pstmt.close();
-
-            if (conn != null)
-                conn.close();
-        }
-
-        return response;
     }
 }

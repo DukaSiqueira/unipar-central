@@ -11,17 +11,15 @@ public class Main {
         try {
             PaisService paisService = new PaisService();
 
+            Pais pais = new Pais();
+            pais.setId(7412);
+            pais.setNome("Cingapura");
+            pais.setAbreviacao("SG");
+            pais.setRegistroAcademico("00207623");
 
+            int id = paisService.insert(pais);
 
-//            Pais pais = new Pais();
-//            pais.setId(7412);
-//            pais.setNome("Cingapura");
-//            pais.setAbreviacao("SG");
-//            pais.setRegistroAcademico("00207623");
-//
-//            int id = paisService.insert(pais);
-//
-            System.out.println(paisService.findById(7412));
+            System.out.println("id inserido: " + id);
 
 
             // Find All
