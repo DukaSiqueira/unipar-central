@@ -1,5 +1,9 @@
 package repositories;
 
+import exceptions.CampoNaoInformadoException;
+import exceptions.EntidadeNaoInformadaException;
+import exceptions.TamanhoCampoInvalidoException;
+import interfaces.CrudInterface;
 import models.Pais;
 import utils.DatabaseUtils;
 
@@ -7,15 +11,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaisDAO {
+public class PaisDAO implements CrudInterface<Pais> {
 
     private static final String FIND_ALL =  "SELECT * FROM PAIS";
 
-    private static final String INSERT = "INSERT INTO pais(id, nome, sigla, ra)" +
-            "VALUES (?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO pais(id, nome, sigla, ra) VALUES (?, ?, ?, ?)";
 
     private static final String FIND_BY_ID = "SELECT * FROM PAIS WHERE ID = ?";
 
+    @Override
     public List<Pais> findAll() throws SQLException {
         ArrayList<Pais> response = new ArrayList<>();
         Connection conn = null;
@@ -54,7 +58,9 @@ public class PaisDAO {
         return response;
     }
 
-    public int insert(Pais pais) throws SQLException {
+    @Override
+    public int insert(Pais pais) throws SQLException, EntidadeNaoInformadaException, CampoNaoInformadoException,
+            TamanhoCampoInvalidoException{
         int id = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -87,7 +93,8 @@ public class PaisDAO {
         return id;
     }
 
-    public Pais findByid(int id) throws SQLException {
+    @Override
+    public Pais findById(int id) throws SQLException, TamanhoCampoInvalidoException, Exception {
         Pais response = null;
         Connection conn = null;
         PreparedStatement pstmt = null;

@@ -3,15 +3,16 @@ package services;
 import exceptions.CampoNaoInformadoException;
 import exceptions.EntidadeNaoInformadaException;
 import exceptions.TamanhoCampoInvalidoException;
+import interfaces.CrudInterface;
 import models.Pais;
 import repositories.PaisDAO;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class PaisService {
+public class PaisService implements CrudInterface<Pais> {
 
-    private void validar(Pais pais) throws SQLException, EntidadeNaoInformadaException, CampoNaoInformadoException,
+    private void validar(Pais pais) throws EntidadeNaoInformadaException, CampoNaoInformadoException,
             TamanhoCampoInvalidoException {
         if (pais == null) {
             throw new EntidadeNaoInformadaException("Pais");
@@ -33,7 +34,7 @@ public class PaisService {
             throw new CampoNaoInformadoException("SIGLA");
         }
 
-        if (pais.getAbreviacao().length() > 2) {
+        if (!(pais.getAbreviacao().length() == 2)) {
             throw new TamanhoCampoInvalidoException("SIGLA", 2);
         }
 
@@ -42,6 +43,7 @@ public class PaisService {
         }
     }
 
+    @Override
     public List<Pais> findAll() throws SQLException {
         PaisDAO paisDAO = new PaisDAO();
         List<Pais> response = paisDAO.findAll();
@@ -49,6 +51,7 @@ public class PaisService {
         return response;
     }
 
+    @Override
     public int insert(Pais pais) throws SQLException, EntidadeNaoInformadaException, CampoNaoInformadoException,
             TamanhoCampoInvalidoException{
         validar(pais);
@@ -59,15 +62,16 @@ public class PaisService {
         return id;
     }
 
-    public Pais findById(int id) throws SQLException, CampoNaoInformadoException, TamanhoCampoInvalidoException , Exception{
+    @Override
+    public Pais findById(int id) throws SQLException, TamanhoCampoInvalidoException , Exception {
         if (id <= 0)
             throw new TamanhoCampoInvalidoException("id", 1);
 
         PaisDAO paisDAO = new PaisDAO();
-        Pais response = paisDAO.findByid(id);
+        Pais response = paisDAO.findById(id);
 
         if (response == null)
-            throw new Exception("Não foi possível encontrar nenhum páis com o id " + id + "!");
+            throw new Exception("Não foi possível encontrar nenhum país com o id " + id + "!");
 
         return response;
     }

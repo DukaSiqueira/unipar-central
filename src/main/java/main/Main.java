@@ -21,12 +21,12 @@ public class Main {
 //
 //            int id = paisService.insert(pais);
 //
-            System.out.println(paisService.findById(7412));
+//            System.out.println(paisService.findById(7412).toString());
 
 
             // Find All
-//            List<Pais> paisList = paisService.findAll();
-//            System.out.println(paisList.toString());
+            List<Pais> paisList = paisService.findAll();
+            System.out.println(paisList);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
