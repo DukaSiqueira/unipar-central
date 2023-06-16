@@ -1,30 +1,19 @@
 package models;
 
-public class Estado {
+public class Estado extends AbstractBaseEntity {
 
-    private int id;
     private String nome;
-    private String abreviacao;
-    private String ra;
+    private String sigla;
     private Pais pais;
 
     public Estado() {}
 
-    public Estado(int id, String nome, String abreviacao, String ra, Pais pais) {
-        this.id = id;
+    public Estado(String nome, String abreviacao, String registroAcademico, Pais pais) {
         this.nome = nome;
-        this.abreviacao = abreviacao;
-        this.ra = ra;
+        this.sigla = abreviacao;
         this.pais = pais;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -34,20 +23,12 @@ public class Estado {
         this.nome = nome;
     }
 
-    public String getAbreviacao() {
-        return abreviacao;
+    public String getSigla() {
+        return sigla;
     }
 
-    public void setAbreviacao(String abreviacao) {
-        this.abreviacao = abreviacao;
-    }
-
-    public String getRa() {
-        return ra;
-    }
-
-    public void setRa(String ra) {
-        this.ra = ra;
+    public void setSigla(String abreviacao) {
+        this.sigla = abreviacao;
     }
 
     public Pais getPais() {
@@ -56,5 +37,16 @@ public class Estado {
 
     public void setPais(Pais pais) {
         this.pais = pais;
+    }
+
+    @Override
+    public String toString() {
+        return "Estado{" +
+                "id='" + super.getId() + '\'' +
+                "nome='" + nome + '\'' +
+                ", sigla='" + sigla + '\'' +
+                ", pais=" + pais + '\'' +
+                ", ra='" + super.getRegistroAcademico() +
+                '}' + "\n";
     }
 }

@@ -17,7 +17,7 @@ public class PaisDAO implements CrudInterface<Pais> {
 
     private static final String FIND_BY_ID = "SELECT * FROM PAIS WHERE ID = ?";
 
-    private static final String INSERT = "INSERT INTO PAIS(ID, NOME, SIGLA, RD) VALUES (?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO PAIS(ID, NOME, SIGLA, RA) VALUES (?, ?, ?, ?)";
 
     private static final String UPDATE = "UPDATE PAIS SET NOME = ?, SIGLA = ? WHERE ID = ?";
 
@@ -25,7 +25,7 @@ public class PaisDAO implements CrudInterface<Pais> {
 
     @Override
     public List<Pais> findAll() throws SQLException {
-        ArrayList<Pais> response = new ArrayList<>();
+        ArrayList<Pais> paises = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -45,7 +45,7 @@ public class PaisDAO implements CrudInterface<Pais> {
                 pais.setSigla(rs.getString("SIGLA"));
                 pais.setRegistroAcademico(rs.getString("RA"));
 
-                response.add(pais);
+                paises.add(pais);
             }
 
         } finally {
@@ -59,12 +59,11 @@ public class PaisDAO implements CrudInterface<Pais> {
                 conn.close();
         }
 
-        return response;
+        return paises;
     }
 
     @Override
-    public int insert(Pais pais) throws SQLException, EntidadeNaoInformadaException, CampoNaoInformadoException,
-            TamanhoCampoInvalidoException{
+    public int insert(Pais pais) throws SQLException {
         int id = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -98,7 +97,7 @@ public class PaisDAO implements CrudInterface<Pais> {
     }
 
     @Override
-    public Pais findById(int id) throws SQLException, TamanhoCampoInvalidoException, Exception {
+    public Pais findById(int id) throws SQLException {
         Pais response = null;
         Connection conn = null;
         PreparedStatement pstmt = null;
