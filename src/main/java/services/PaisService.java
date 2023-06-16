@@ -30,11 +30,11 @@ public class PaisService implements CrudInterface<Pais> {
             throw new TamanhoCampoInvalidoException("NOME", 60);
         }
 
-        if (pais.getAbreviacao() == null || pais.getAbreviacao().isBlank() || pais.getAbreviacao().isEmpty()) {
+        if (pais.getSigla() == null || pais.getSigla().isBlank() || pais.getSigla().isEmpty()) {
             throw new CampoNaoInformadoException("SIGLA");
         }
 
-        if (!(pais.getAbreviacao().length() == 2)) {
+        if (!(pais.getSigla().length() == 2)) {
             throw new TamanhoCampoInvalidoException("SIGLA", 2);
         }
 
@@ -74,6 +74,22 @@ public class PaisService implements CrudInterface<Pais> {
             throw new Exception("Não foi possível encontrar nenhum país com o id " + id + "!");
 
         return response;
+    }
+
+    @Override
+    public void update(Pais pais) throws SQLException, CampoNaoInformadoException, EntidadeNaoInformadaException, TamanhoCampoInvalidoException {
+        validar(pais);
+        PaisDAO paisDAO = new PaisDAO();
+        paisDAO.update(pais);
+    }
+
+    @Override
+    public void delete(int id) throws  SQLException, CampoNaoInformadoException {
+        if (id <= 0)
+            throw new CampoNaoInformadoException("id");
+
+        PaisDAO paisDAO = new PaisDAO();
+        paisDAO.delete(id);
     }
 
 }

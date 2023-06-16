@@ -15,9 +15,13 @@ public class PaisDAO implements CrudInterface<Pais> {
 
     private static final String FIND_ALL =  "SELECT * FROM PAIS";
 
-    private static final String INSERT = "INSERT INTO pais(id, nome, sigla, ra) VALUES (?, ?, ?, ?)";
-
     private static final String FIND_BY_ID = "SELECT * FROM PAIS WHERE ID = ?";
+
+    private static final String INSERT = "INSERT INTO PAIS(ID, NOME, SIGLA, RD) VALUES (?, ?, ?, ?)";
+
+    private static final String UPDATE = "UPDATE PAIS SET NOME = ?, SIGLA = ? WHERE ID = ?";
+
+    private static final String DELETE_BY_ID = "DELE FROM PAIS WHERE ID = ?";
 
     @Override
     public List<Pais> findAll() throws SQLException {
@@ -38,7 +42,7 @@ public class PaisDAO implements CrudInterface<Pais> {
                 Pais pais = new Pais();
                 pais.setId(rs.getInt("ID"));
                 pais.setNome(rs.getString("NOME"));
-                pais.setAbreviacao(rs.getString("SIGLA"));
+                pais.setSigla(rs.getString("SIGLA"));
                 pais.setRegistroAcademico(rs.getString("RA"));
 
                 response.add(pais);
@@ -71,7 +75,7 @@ public class PaisDAO implements CrudInterface<Pais> {
             pstmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, pais.getId());
             pstmt.setString(2, pais.getNome());
-            pstmt.setString(3, pais.getAbreviacao());
+            pstmt.setString(3, pais.getSigla());
             pstmt.setString(4, pais.getRegistroAcademico());
 
             pstmt.executeUpdate();
@@ -110,7 +114,7 @@ public class PaisDAO implements CrudInterface<Pais> {
                 response = new Pais();
                 response.setId(rs.getInt("ID"));
                 response.setNome(rs.getString("NOME"));
-                response.setAbreviacao(rs.getString("SIGLA"));
+                response.setSigla(rs.getString("SIGLA"));
                 response.setRegistroAcademico(rs.getString("RA"));
             }
 
@@ -126,5 +130,49 @@ public class PaisDAO implements CrudInterface<Pais> {
         }
 
         return response;
+    }
+
+    @Override
+    public void update(Pais pais) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+
+            conn = new DatabaseUtils().getConnection();
+            pstmt = conn.prepareStatement(UPDATE);
+            pstmt.setString(1, pais.getNome());
+            pstmt.setString(2, pais.getSigla());
+            pstmt.setInt(3, pais.getId());
+            pstmt.executeUpdate();
+
+        } finally {
+            if (pstmt != null)
+                pstmt.close();
+
+            if (conn != null)
+                conn.close();
+        }
+    }
+
+    @Override
+    public void delete(int id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+
+            conn = new DatabaseUtils().getConnection();
+            pstmt = conn.prepareStatement(DELETE_BY_ID);
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+
+        } finally {
+            if (pstmt != null)
+                pstmt.close();
+
+            if (conn != null)
+                conn.close();
+        }
     }
 }

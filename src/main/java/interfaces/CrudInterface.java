@@ -12,7 +12,11 @@ public interface CrudInterface<Model> {
 
     List<Model> findAll() throws SQLException;
 
+    Model findById(int id) throws TamanhoCampoInvalidoException, Exception;
+
     int insert(Model model) throws SQLException, EntidadeNaoInformadaException, CampoNaoInformadoException, TamanhoCampoInvalidoException;
 
-    Model findById(int id) throws TamanhoCampoInvalidoException, Exception;
+    void update(Model model) throws SQLException, CampoNaoInformadoException, EntidadeNaoInformadaException, TamanhoCampoInvalidoException;
+
+    void delete(int id) throws SQLException, CampoNaoInformadoException;
 }
