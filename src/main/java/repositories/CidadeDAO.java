@@ -4,31 +4,24 @@ import exceptions.CampoNaoInformadoException;
 import exceptions.EntidadeNaoInformadaException;
 import exceptions.TamanhoCampoInvalidoException;
 import interfaces.CrudInterface;
-import models.Estado;
-import models.Pais;
+import models.Cidade;
 import utils.DatabaseUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstadoDAO implements CrudInterface<Estado> {
+public class CidadeDAO implements CrudInterface<Cidade> {
 
-    private static final String FIND_ALL = "SELECT * FROM ESTADO";
-
-    private static final String FIND_BY_ID = "SELECT * FROM ESTADO WHERE ID = ?";
-
-    private static final String INSERT = "INSERT INTO ESTADO(ID, NOME, SIGLA, RA, PAIS_ID)" +
-            "VALUES (?, ?, ?, ?, ?)";
-
-    private static final String UPDATE = "UPDATE ESTADO SET NOME = ?," +
-            "SIGLA = ? WHERE ID = ?";
-
-    private static  final String DELETE_BY_ID = "DELETE FROM ESTADO WHERE ID = ?";
+    private static final String FIND_ALL = "SELECT * FROM CIDADE LIMIT 2";
+    private static final String FIND_BY_ID = "SELECT * FROM CIDADE WHERE ID = ?";
+    private static final String INSERT = "INSERT INTO CIDADE (ID, NOME, ESTADO_ID, RA) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE CIDADE SET NOME = ?, ESTADO_ID = ? WHERE ID = ?";
+    private static final String DELETE = "DELETE FROM CIDADE WHERE ID = ?";
 
     @Override
-    public List<Estado> findAll() throws SQLException {
-        ArrayList<Estado> estados = new ArrayList<>();
+    public List<Cidade> findAll() throws SQLException {
+        ArrayList<Cidade> cidades = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -39,14 +32,13 @@ public class EstadoDAO implements CrudInterface<Estado> {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Estado estado = new Estado();
-                estado.setId(rs.getInt("ID"));
-                estado.setNome(rs.getString("NOME"));
-                estado.setSigla(rs.getString("SIGLA"));
-                estado.setRegistroAcademico(rs.getString("RA"));
-                estado.setPais(new PaisDAO().findById(rs.getInt("PAIS_ID")));
+                Cidade cidade = new Cidade();
+                cidade.setId(rs.getInt("ID"));
+                cidade.setNome(rs.getString("NOME"));
+                cidade.setRegistroAcademico(rs.getString("RA"));
+                cidade.setEstado(new EstadoDAO().findById(rs.getInt("ESTADO_ID")));
 
-                estados.add(estado);
+                cidades.add(cidade);
             }
         } finally {
             if (rs != null)
@@ -59,12 +51,12 @@ public class EstadoDAO implements CrudInterface<Estado> {
                 conn.close();
         }
 
-        return estados;
+        return cidades;
     }
 
     @Override
-    public Estado findById(int id) throws SQLException {
-        Estado estado = null;
+    public Cidade findById(int id) throws SQLException {
+        Cidade cidade = null;
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -76,14 +68,12 @@ public class EstadoDAO implements CrudInterface<Estado> {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                estado = new Estado();
-                estado.setId(rs.getInt("ID"));
-                estado.setNome(rs.getString("NOME"));
-                estado.setSigla(rs.getString("SIGLA"));
-                estado.setPais(new PaisDAO().findById(rs.getInt("PAIS_ID")));
-                estado.setRegistroAcademico(rs.getString("RA"));
+                cidade = new Cidade();
+                cidade.setId(rs.getInt("ID"));
+                cidade.setNome(rs.getString("NOME"));
+                cidade.setRegistroAcademico(rs.getString("RA"));
+                cidade.setEstado(new EstadoDAO().findById(rs.getInt("ESTADO_ID")));
             }
-
         } finally {
             if (rs != null)
                 rs.close();
@@ -94,11 +84,12 @@ public class EstadoDAO implements CrudInterface<Estado> {
             if (conn != null)
                 conn.close();
         }
-        return estado;
+
+        return cidade;
     }
 
     @Override
-    public int insert(Estado estado) throws SQLException {
+    public int insert(Cidade cidade) throws SQLException {
         int id = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -107,11 +98,10 @@ public class EstadoDAO implements CrudInterface<Estado> {
         try {
             conn = new DatabaseUtils().getConnection();
             pstmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, estado.getId());
-            pstmt.setString(2, estado.getNome());
-            pstmt.setString(3, estado.getSigla());
-            pstmt.setString(4, estado.getRegistroAcademico());
-            pstmt.setInt(5, estado.getPais().getId());
+            pstmt.setInt(1, cidade.getId());
+            pstmt.setString(2, cidade.getNome());
+            pstmt.setInt(3, cidade.getEstado().getId());
+            pstmt.setString(4, cidade.getRegistroAcademico());
 
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
@@ -132,16 +122,17 @@ public class EstadoDAO implements CrudInterface<Estado> {
     }
 
     @Override
-    public void update(Estado estado) throws SQLException, CampoNaoInformadoException, EntidadeNaoInformadaException, TamanhoCampoInvalidoException {
+    public void update(Cidade cidade) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
             conn = new DatabaseUtils().getConnection();
             pstmt = conn.prepareStatement(UPDATE);
-            pstmt.setString(1, estado.getNome());
-            pstmt.setString(2, estado.getSigla());
-            pstmt.setInt(3, estado.getId());
+            pstmt.setString(1, cidade.getNome());
+            pstmt.setInt(2, cidade.getEstado().getId());
+            pstmt.setInt(3, cidade.getId());
+
             pstmt.executeUpdate();
         } finally {
             if (pstmt != null)
@@ -153,13 +144,13 @@ public class EstadoDAO implements CrudInterface<Estado> {
     }
 
     @Override
-    public void delete(int id) throws SQLException, CampoNaoInformadoException {
+    public void delete(int id) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
             conn = new DatabaseUtils().getConnection();
-            pstmt = conn.prepareStatement(DELETE_BY_ID);
+            pstmt = conn.prepareStatement(DELETE);
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } finally {
@@ -170,5 +161,4 @@ public class EstadoDAO implements CrudInterface<Estado> {
                 conn.close();
         }
     }
-
 }
