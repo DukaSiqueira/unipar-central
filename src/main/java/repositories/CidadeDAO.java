@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CidadeDAO implements CrudInterface<Cidade> {
 
-    private static final String FIND_ALL = "SELECT * FROM CIDADE LIMIT 2";
+    private static final String FIND_ALL = "SELECT * FROM CIDADE";
     private static final String FIND_BY_ID = "SELECT * FROM CIDADE WHERE ID = ?";
     private static final String INSERT = "INSERT INTO CIDADE (ID, NOME, ESTADO_ID, RA) VALUES (?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE CIDADE SET NOME = ?, ESTADO_ID = ? WHERE ID = ?";

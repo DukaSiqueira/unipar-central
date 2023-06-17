@@ -2,8 +2,8 @@ package models;
 
 import java.util.Date;
 
-public class PessoaFisica extends Pessoa {
-
+public class PessoaFisica {
+    private Pessoa pessoa;
     private String nome;
     private String cpf;
     private String rg;
@@ -11,12 +11,20 @@ public class PessoaFisica extends Pessoa {
 
     public PessoaFisica() {}
 
-    public PessoaFisica(int id, String email, String registroAcademico, String nome, String cpf, String rg, Date dataNascimento) {
-        super(id, email, registroAcademico);
+    public PessoaFisica(Pessoa pessoa, String nome, String cpf, String rg, Date dataNascimento) {
+        this.pessoa = pessoa;
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
         this.dataNascimento = dataNascimento;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public String getNome() {
@@ -54,7 +62,8 @@ public class PessoaFisica extends Pessoa {
     @Override
     public String toString() {
         return "PessoaFisica{" +
-                "nome='" + nome + '\'' +
+                "pessoa=" + pessoa +
+                ", nome='" + nome + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", rg='" + rg + '\'' +
                 ", dataNascimento=" + dataNascimento +

@@ -12,11 +12,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PessoaJuridicaDAO implements CrudInterface<PessoaJuridica> {
 
-    private static final String FIND_ALL = "SELECT * FROM PESSOA_JURIDICA";
+    private static final String FIND_ALL = "SELECT * FROM PESSOAJURIDICA";
 
     private static final String FIND_BY_ID = "SELECT * FROM PESSOAJURIDICA WHERE PESSOA_ID = ?";
 
@@ -33,7 +34,7 @@ public class PessoaJuridicaDAO implements CrudInterface<PessoaJuridica> {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<PessoaJuridica> pessoaJuridicas = null;
+        List<PessoaJuridica> pessoaJuridicas = new ArrayList<>();
 
         try {
             conn = new DatabaseUtils().getConnection();
@@ -47,6 +48,7 @@ public class PessoaJuridicaDAO implements CrudInterface<PessoaJuridica> {
                 pessoaJuridica.setCnaePrincipal(rs.getString("CNAEPRINCIPAL"));
                 pessoaJuridica.setNomeFantasia(rs.getString("FANTASIA"));
                 pessoaJuridica.setPessoa(new PessoaDAO().findById(rs.getInt("PESSOA_ID")));
+                System.out.println(pessoaJuridica);
 
                 pessoaJuridicas.add(pessoaJuridica);
             }
@@ -104,6 +106,7 @@ public class PessoaJuridicaDAO implements CrudInterface<PessoaJuridica> {
         try {
             conn = new DatabaseUtils().getConnection();
             pstmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
+            //RAZAOSOCIAL, CNPJ, CNAEPRINCIPAL, FANTASIA, PESSOA_ID
             pstmt.setString(1, pessoaJuridica.getRazaoSocial());
             pstmt.setString(2, pessoaJuridica.getCnpj());
             pstmt.setString(3, pessoaJuridica.getCnaePrincipal());
