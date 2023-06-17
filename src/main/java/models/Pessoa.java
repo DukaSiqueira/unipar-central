@@ -1,25 +1,13 @@
 package models;
 
-public class Pessoa {
-
-    private int id;
+public class Pessoa extends AbstractBaseEntity {
     private String email;
-    private String ra;
 
     public Pessoa() {}
 
-    public Pessoa(int id, String email, String ra) {
-        this.id = id;
+    public Pessoa(int id, String email, String registroAcademico) {
+        super(id, registroAcademico);
         this.email = email;
-        this.ra = ra;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -30,11 +18,12 @@ public class Pessoa {
         this.email = email;
     }
 
-    public String getRa() {
-        return ra;
-    }
-
-    public void setRa(String ra) {
-        this.ra = ra;
+    @Override
+    public String toString() {
+        return "Pessoa{" +
+                "id='" + super.getId() + '\'' +
+                "email='" + email + '\'' +
+                "ra='" + super.getRegistroAcademico() + '\'' +
+                '}' + "\n";
     }
 }

@@ -11,8 +11,8 @@ public class PessoaFisica extends Pessoa {
 
     public PessoaFisica() {}
 
-    public PessoaFisica(int id, String email, String ra, String nome, String cpf, String rg, Date dataNascimento) {
-        super(id, email, ra);
+    public PessoaFisica(int id, String email, String registroAcademico, String nome, String cpf, String rg, Date dataNascimento) {
+        super(id, email, registroAcademico);
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
@@ -49,5 +49,15 @@ public class PessoaFisica extends Pessoa {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    @Override
+    public String toString() {
+        return "PessoaFisica{" +
+                "nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", rg='" + rg + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                '}';
     }
 }

@@ -51,14 +51,17 @@ public class EstadoService implements CrudInterface<Estado> {
     @Override
     public List<Estado> findAll() throws SQLException {
         EstadoDAO estadoDAO = new EstadoDAO();
-        List<Estado> estados = estadoDAO.findAll();
-        return estados;
+        return estadoDAO.findAll();
     }
 
     @Override
-    public Estado findById(int id) throws TamanhoCampoInvalidoException, Exception {
+    public Estado findById(int id) throws Exception {
         EstadoDAO estadoDAO = new EstadoDAO();
         Estado estado = estadoDAO.findById(id);
+
+        if (estado == null)
+            throw new Exception("Estado id: " + id + " não encontrado!");
+
         return estado;
     }
 
@@ -67,9 +70,7 @@ public class EstadoService implements CrudInterface<Estado> {
         validar(estado);
 
         EstadoDAO estadoDAO = new EstadoDAO();
-        int id = estadoDAO.insert(estado);
-
-        return id;
+        return estadoDAO.insert(estado);
     }
 
     @Override
