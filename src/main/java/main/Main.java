@@ -192,7 +192,7 @@ public class Main {
             // pessoaFisica = pessoaFisicaService.findById(22011);
             // System.out.println("PessoaFisica: " + pessoaFisica);
 
-            
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
