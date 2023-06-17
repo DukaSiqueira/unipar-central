@@ -11,7 +11,15 @@ import java.util.List;
 
 public class AgenciaService {
 
+    private RAService raService;
+
+    public void RAService(){
+        this.raService = new RAService();
+    }
+
     public void validar (Agencia agencia) throws CampoNaoInformadoException, TamanhoCampoInvalidoException, EntidadeNaoInformadaException, SQLException {
+
+        raService.validarRA(agencia.getRegistroAcademico());
 
         if (agencia == null){
             throw new EntidadeNaoInformadaException("agencia");
@@ -52,12 +60,18 @@ public class AgenciaService {
     public void delete(int id) throws Exception {
         AgenciaDAO agenciaDAO = new AgenciaDAO();
         Agencia agenciaExistente = agenciaDAO.FIND_BY_ID(id);
+        if (agenciaExistente == null) {
+            throw new NaoExisteDatabaseException("ID", "Agencia");
+        }
         agenciaDAO.delete(id);
     }
 
-    public List<Agencia> findAll() throws SQLException {
+    public List<Agencia> findAll() throws SQLException, FindRetornadoException {
         AgenciaDAO agenciaDAO = new AgenciaDAO();
         List<Agencia> listaAgencia = agenciaDAO.FIND_ALL();
+        if (listaAgencia.isEmpty()){
+            throw new FindRetornadoException("Agencia");
+        }
         return listaAgencia;
     }
 
