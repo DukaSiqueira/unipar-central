@@ -98,7 +98,7 @@ public class PessoaDAO implements CrudInterface<Pessoa> {
     }
 
     @Override
-    public int insert(Pessoa pessoaDAO) throws SQLException {
+    public int insert(Pessoa pessoa) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         int id = 0;
@@ -106,9 +106,9 @@ public class PessoaDAO implements CrudInterface<Pessoa> {
         try {
             conn = new DatabaseUtils().getConnection();
             pstmt = conn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, pessoaDAO.getId());
-            pstmt.setString(2, pessoaDAO.getEmail());
-            pstmt.setString(3, pessoaDAO.getRegistroAcademico());
+            pstmt.setInt(1, pessoa.getId());
+            pstmt.setString(2, pessoa.getEmail());
+            pstmt.setString(3, pessoa.getRegistroAcademico());
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
