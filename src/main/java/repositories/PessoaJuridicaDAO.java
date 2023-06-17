@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PessoaJuridicaDAO implements CrudInterface<PessoaJuridica> {
@@ -34,7 +33,7 @@ public class PessoaJuridicaDAO implements CrudInterface<PessoaJuridica> {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<PessoaJuridica> pessoaJuridicas = new ArrayList<>();
+        List<PessoaJuridica> pessoaJuridicas = null;
 
         try {
             conn = new DatabaseUtils().getConnection();
